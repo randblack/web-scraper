@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mongo Journal</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  {{!-- <script src="/assets/js/script.js"></script> --}}
+  <link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+  <style>
+    body {
+      color: #333;
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    #leftContent {
+      position: fixed;
+      background-color: #fff;
+      border-radius: 15px;
+      margin: 7.5vh 2.5vh 2.5vh 2.5vh;
+      width: calc(20% - 7vh);
+      height: calc(100% - 12vh);
+      padding: 1vh;
+      box-sizing: content-box;
+      box-shadow: 0 1vh 4vh #dddddd;
+    }
+
+    #rightContent {
+      position: fixed;
+      background-color: #fff;
+      border-radius: 15px;
+      margin: 7.5vh 2.5vh 2.5vh 2.5vh;
+      width: calc(30% - 7vh);
+      height: calc(100% - 12vh);
+      padding: 1vh;
+      box-sizing: content-box;
+      box-shadow: 0 1vh 4vh #dddddd;
+    }
+
+    #content {
+      display: grid;
+      grid-template-columns: 20% auto 30%;
+      height: 100vh;
+      scroll-snap-align: center;
+      position: relative;
+      overflow: scroll;
+      scroll-snap-type: mandatory;
+      scroll-snap-points-y: repeat(100vh);
+      scroll-snap-type: y mandatory;
+    }
+
+    .saved {
+      list-style-type: none;
+      padding: 0;
+      margin: 5vh 2.5vh 0 0;
+      border-radius: 15px;
+    }
+
+    #saved {
+      list-style-type: none;
+      padding: 0;
+      margin: 7.5vh 0 0 0;
+      border-radius: 15px;
+    }
+
+    .notes {
+      background-color: #fff;
+      margin: 7.5vh 2.5vh 0 2.5vh;
+      border-radius: 15px;
+      padding: 1vh;
+      box-shadow: 0 1vh 4vh #dddddd;
+    }
+
+    .notes:last-child {
+      margin: 2.5vh 2.5vh 0 2.5vh;
+    }
+
+    .savedArticle {
+      height: 25vh;
+      list-style-type: none;
+      padding: 0;
+      margin: 0 0 2.5vh 0;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 1vh 4vh #dddddd;
+      display: grid;
+      grid-template-columns: 25vh auto 10%;
+      justify-content: space-between;
+      align-items: center;
+      scroll-snap-align: center;
+    }
+
+    .savedImg {
+      background-size: cover;
+      background-position: center center;
+      height: 100%;
+      width: 25vh;
+      border-radius: 15px 0 0 15px;
+    }
+
+    .headline {
+      padding: 1vh;
+    }
+
+    #nav {
+      z-index: 3;
+      background-image: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgb(255, 255, 255, 0));
+      position: fixed;
+      text-align: center;
+      width: 100%;
+      padding: 2.5vh 0 0 5vh;
+      letter-spacing: 1px;
+    }
+
+    #logo {
+      position: absolute;
+      left: 5vh;
+      margin: 0 0 0 0;
+    }
+
+    #nav>li {
+      padding: 1vh;
+    }
+
+    #nav>li>p {
+      margin: 0;
+    }
+
+    #nav>li:after {
+      content: "";
+      display: block;
+      margin: 0 auto;
+      width: 90%;
+      padding: 1.5vh 0 0 0;
+      border-bottom: 1px solid #e4e4e4;
+    }
+
+    #nav>li:last-child:after {
+      border: none;
+    }
+
+    .navLink {
+      margin: 0 5vh 0 0;
+      color: #333;
+    }
+
+    a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .active {
+      border-bottom: 2px solid #333;
+      border-radius: 1px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+
+    h2 {
+      margin: 1vh 0 1vh 1vh;
+    }
+
+    .article {
+      position: relative;
+      z-index: 2;
+      padding: 2.5vh 1vh 1vh 1vh;
+      overflow: scroll;
+      height: 40vh;
+      mix-blend-mode: multiply;
+      background-color: rgb(255, 255, 255);
+    }
+
+    .post {
+      margin: 5vh 0 5vh 0;
+      height: 82vh;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 1vh 4vh #dddddd;
+    }
+
+    .postShadow {
+      height: 97.5vh;
+      scroll-snap-align: center;
+      padding: 2.5vh 0 0 0;
+    }
+
+    .articleImage {
+      z-index: 2;
+      height: 50vh;
+      overflow: hidden;
+    }
+
+    .articleImage>img {
+      border-radius: 15px 15px 0 0;
+      width: 100%;
+      height: auto;
+    }
+
+    button:focus {
+      outline: 0;
+    }
+
+    .backgroundImage {
+      border-radius: 15px;
+      position: relative;
+      bottom: 85vh;
+      z-index: -1;
+      height: 80vh;
+      width: 100%;
+      opacity: 0.75;
+      overflow: hidden;
+    }
+
+    .backgroundImage>img {
+      height: 85vh;
+      filter: blur(8vh);
+      width: 110%;
+    }
+
+    .credits {
+      opacity: 0.5;
+      padding-left: 1vh;
+      z-index: 3;
+      position: absolute;
+      bottom: 10vh;
+      left: 0;
+    }
+
+    .save {
+      position: absolute;
+      border: none;
+      bottom: 13vh;
+      right: 1vh;
+      width: 3vh;
+      height: 3vh;
+      background-image: url(../img/plus-circle-solid.svg);
+      background-repeat: no-repeat;
+    }
+
+    .save>button {
+      width: 3vh;
+      height: auto;
+    }
+
+    .remove {
+      width: 2vh;
+      padding: 3vh;
+      height: auto;
+    }
+
+    .unsave {
+      color: rgb(255, 117, 117);
+      text-align: center;
+      width: 100%;
+      margin: auto;
+      border: none;
+    }
+
+    textarea {
+      resize: none;
+      width: calc(100% - 4vh);
+      margin: 1vh;
+      height: 20vh;
+      padding: 1vh;
+      border-radius: 10px;
+      outline: 0;
+      border: 1px solid #e4e4e4;
+    }
+
+    textarea:focus,
+    input:focus {
+      outline: 0;
+    }
+
+    #comments {
+      width: 100%;
+      height: 10vh;
+      box-shadow: 0 1vh 4vh #dddddd;
+      background-color: rgb(255, 255, 255);
+      position: relative;
+      bottom: 5vh;
+    }
+
+    .comment {
+      background-color: rgb(57, 126, 255);
+      margin: 0 1vh 1vh 1vh;
+      color: #fff;
+      width: 7vh;
+      height: 4vh;
+      border-radius: 1vh;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+  {{{ body }}}
+</body>
+
+</html>

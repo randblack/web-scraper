@@ -1,0 +1,48 @@
+<div id="content">
+  <div id="nav"><span id="logo">#iBlog</span><a class="navLink" href="/">Home</a> <a class="active navLink"
+      href="/saved">Saved Articles</a> </div>
+  <div id="leftCol">
+    <div id="leftContent">
+      <h2>Featured</h2>
+    </div>
+  </div>
+
+  <div id="articles">
+
+
+    <ul id="saved">
+      {{#each data}}
+      {{#if Saved}}
+      <a href="/view/{{this.Id}}">
+        <li>
+
+          <div class="savedArticle">
+
+            <div class="savedImg" style="background-image:url({{this.Image}})"></div>
+
+            <div class="headline">{{this.Headline}}</div>
+
+            <div>
+              <form action="/unsave/{{this.Id}}" method="POST">
+                <button class="unsave"><img class="remove" src="../img/times-solid.svg"></button>
+              </form>
+            </div>
+
+
+
+
+
+
+
+          </div>
+        </li>
+      </a>
+      {{/if}} {{/each}}
+    </ul>
+
+
+  </div>
+
+  <div id="rightCol">
+  </div>
+</div>

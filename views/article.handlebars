@@ -1,0 +1,62 @@
+<div id="content">
+  <div id="nav"><span id="logo">#iBlog</span><a class="navLink" href="/">Home</a> <a class=" active navLink"
+      href="/saved">Saved Articles</a>
+  </div>
+  <div id="leftCol">
+    <div id="leftContent">
+      <h2>Featured</h2>
+    </div>
+  </div>
+
+  <div id="articles">
+    <div class="postShadow">
+      <div class="post">
+        <div class="articleImage">
+          <img src="{{data.Image}}">
+        </div>
+
+
+        <div class="article">
+          <a href="{{data.Link}}"></a>
+          <h1>{{data.Headline}}</h1>
+          <p>{{data.Excerpt}}</p>
+          </a>
+          <p class="credits">
+            {{data.Author}} - {{data.Date}}
+          </p>
+          <form action="/save/{{data.Id}}" method="POST">
+            <button class="save" type="submit"></button>
+          </form>
+        </div>
+      </div>
+
+      <div class="backgroundImage">
+        <img src="{{data.Image}}">
+      </div>
+
+    </div>
+    <div id="comments">
+
+    </div>
+
+  </div>
+
+  <div id="rightCol">
+
+    <div class="notes">
+      <h2>Article Notes</h2>
+
+
+      <form method="POST" action="/comment/{{data.Id}}">
+
+        <textarea name="comment" placeholder="Add/Update comment.." required="false"></textarea>
+
+        <button type="submit" class="comment" value="submit">save</button>
+      </form>
+
+
+    </div>
+    <div id="comments" class="notes">
+      {{data.Comment}}
+    </div>
+  </div>

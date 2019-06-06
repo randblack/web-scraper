@@ -1,0 +1,46 @@
+<div id="content">
+  <div id="nav"><span id="logo">#iBlog</span><a class="active navLink" href="/">Home</a> <a class="navLink"
+      href="/saved">Saved Articles</a>
+  </div>
+  <div id="leftCol">
+    <div id="leftContent">
+      <h2>Featured</h2>
+    </div>
+  </div>
+
+  <div id="articles">
+    {{#each data}}
+    <div class="postShadow">
+      <div class="post">
+        <div class="articleImage">
+          <img src="{{this.Image}}">
+        </div>
+
+
+        <div class="article">
+          <a href="{{this.Link}}"></a>
+          <h1>{{this.Headline}}</h1>
+          <p>{{this.Excerpt}}</p>
+          </a>
+          <p class="credits">
+            {{this.Author}} - {{this.Date}}
+          </p>
+          <form action="/save/{{this.Id}}" method="POST">
+            <button class="save" type="submit"></button>
+          </form>
+        </div>
+      </div>
+
+      <div class="backgroundImage">
+        <img src="{{this.Image}}">
+      </div>
+
+    </div>
+
+
+    {{/each}}
+  </div>
+
+  <div id="rightCol">
+  </div>
+</div>
