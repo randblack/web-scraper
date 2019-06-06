@@ -102,6 +102,6 @@ app.post("/comment/:id", function (req, res) {
   })
 });
 
-app.listen(PORT, function () {
+app.listen(process.env.PORT, function () {
   console.log("web server is running on port: " + PORT)
 });
