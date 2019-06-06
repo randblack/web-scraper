@@ -4,7 +4,7 @@ var app = express();
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.use(express.json());
-var PORT = 8080;
+var PORT = process.ev.PORT || 8080;
 var axios = require("axios");
 var cheerio = require("cheerio");
 var mongojs = require('mongojs')
