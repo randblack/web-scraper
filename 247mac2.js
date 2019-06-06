@@ -45,9 +45,6 @@ axios.get('https://www.idownloadblog.com/').then(function (response) {
 });
 
 app.get("/", function (req, res) {
-
-
-
   db.articles.find(function (err, docs) {
     res.render("index", { data: docs });
   });
